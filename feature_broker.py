@@ -35,9 +35,10 @@ class FeatureBroker(object):
     def __getattr__(self, name):
         return getattr(self.instance, name)
 
-    # # These method stubs are provided only to allow IDE auto_completion
-    # def get_feature(self, feature_name):
-    #     assert False, 'This method should not be callable'
-    #
-    # def provide(self, feature_name, cls):
-    #     assert False, 'This method should not be callable'
+    # All functionality should be provided in the __FeatureBrokerSingleton class, these methods are provided only so
+    # that IDE auto complete works.
+    def get_feature(self, feature_name):
+        return self.instance.get_feature(feature_name)
+
+    def provide(self, feature_name, cls):
+        return self.instance.provide(feature_name, cls)
