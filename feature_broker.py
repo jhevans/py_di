@@ -2,7 +2,7 @@ __author__ = 'JohnH.Evans'
 
 
 class MissingFeatureException(BaseException):
-    message_template = "Feature '%s' has not been provisioned"
+    message_template = "Feature '%s' has not been provided"
 
     def __init__(self, resource):
         super(MissingFeatureException, self).__init__(self.message_template % resource)
