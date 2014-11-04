@@ -1,14 +1,14 @@
 from logger import PrintLogger, FileLogger
-from provisioner import Provisioner
+from provisioner import FeatureBroker
 
 __author__ = 'JohnH.Evans'
 
 
 def do_some_stuff():
-    logger = Provisioner().get_dependency('logger')
+    logger = FeatureBroker().get_feature('logger')
     logger.log('Test')
 
 
 if __name__ == "__main__":
-    Provisioner().provision('logger', FileLogger)
+    FeatureBroker().provide('logger', FileLogger)
     do_some_stuff()
