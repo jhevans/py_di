@@ -1,0 +1,1 @@
+A very basic dependency injection framework to help me get my head around the concept.
