@@ -1,5 +1,4 @@
 from unittest.case import TestCase
-from mock import Mock
 from feature_broker import FeatureBroker, MissingFeatureException
 
 __author__ = 'JohnH.Evans'
