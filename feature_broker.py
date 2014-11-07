@@ -4,8 +4,15 @@ __author__ = 'JohnH.Evans'
 class MissingFeatureException(BaseException):
     message_template = "Feature '%s' has not been provided"
 
-    def __init__(self, resource):
-        super(MissingFeatureException, self).__init__(self.message_template % resource)
+    def __init__(self, feature):
+        super(MissingFeatureException, self).__init__(self.message_template % feature)
+
+
+class DuplicateFeatureException(BaseException):
+    message_template = "Feature '%s' has already been provided"
+
+    def __init__(self, feature):
+        super(DuplicateFeatureException, self).__init__(self.message_template % feature)
 
 
 class FeatureBroker(object):
@@ -25,6 +32,21 @@ class FeatureBroker(object):
 
         def provide(self, feature_name, cls):
             self.features[feature_name] = cls()
+            # try:
+            #     self.features[feature_name]
+            #     raise DuplicateFeatureException(feature_name)
+            # except KeyError:
+            #     self.features[feature_name] = cls()
+
+        def remove_feature(self, feature_name):
+            del self.features[feature_name]
+
+        def get_feature_names(self):
+            return sorted(self.features.keys())
+
+        def remove_all_features(self):
+            self.features = {}
+
 
     def __init__(self):
         if self.instance:
