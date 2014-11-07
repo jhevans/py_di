@@ -49,10 +49,8 @@ class FeatureBroker(object):
 
 
     def __init__(self):
-        if self.instance:
-            self.instance
-        else:
-            self.instance = self.__FeatureBrokerSingleton()
+        if not FeatureBroker.instance:
+            FeatureBroker.instance = self.__FeatureBrokerSingleton()
 
     def __getattr__(self, name):
         return getattr(self.instance, name)

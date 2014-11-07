@@ -47,7 +47,6 @@ class FeatureBrokerTest(TestCase):
 
         self.assertEqual(features, sorted(self.feature_names))
 
-    @skip('This aint working')
     def test_remove_all_features(self):
         for name in self.feature_names:
             FeatureBroker().provide(name, self.TestFeature)
