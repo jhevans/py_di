@@ -1,5 +1,7 @@
-from unittest.case import TestCase, skip
-from feature_broker import FeatureBroker, MissingFeatureException, DuplicateFeatureException
+from unittest.case import TestCase
+
+from py_di.feature_broker import FeatureBroker, MissingFeatureException, DuplicateFeatureException
+
 
 __author__ = 'JohnH.Evans'
 

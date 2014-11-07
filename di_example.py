@@ -1,5 +1,5 @@
-from logger import PrintLogger, FileLogger
-from feature_broker import FeatureBroker
+from logger import PrintLogger
+from py_di.feature_broker import FeatureBroker
 
 __author__ = 'JohnH.Evans'
 
