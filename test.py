@@ -57,7 +57,7 @@ class FeatureBrokerTest(TestCase):
             with self.assertRaises(MissingFeatureException):
                 FeatureBroker().get_feature(name)
 
-    @skip("There's something really funky going on here...")
+    # @skip("There's something really funky going on here...")
     def test_cant_duplicate_feature(self):
         FeatureBroker().provide('foo', self.TestFeature)
         with self.assertRaises(DuplicateFeatureException) as context_manager:

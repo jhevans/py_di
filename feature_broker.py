@@ -31,12 +31,11 @@ class FeatureBroker(object):
                 raise MissingFeatureException(feature_name)
 
         def provide(self, feature_name, cls):
-            self.features[feature_name] = cls()
-            # try:
-            #     self.features[feature_name]
-            #     raise DuplicateFeatureException(feature_name)
-            # except KeyError:
-            #     self.features[feature_name] = cls()
+            try:
+                self.features[feature_name]
+                raise DuplicateFeatureException(feature_name)
+            except KeyError:
+                self.features[feature_name] = cls()
 
         def remove_feature(self, feature_name):
             del self.features[feature_name]
@@ -50,15 +49,15 @@ class FeatureBroker(object):
 
     def __init__(self):
         if not FeatureBroker.instance:
-            FeatureBroker.instance = self.__FeatureBrokerSingleton()
+            FeatureBroker.instance = FeatureBroker.__FeatureBrokerSingleton()
 
     def __getattr__(self, name):
-        return getattr(self.instance, name)
+        return getattr(FeatureBroker.instance, name)
 
     # All functionality should be provided in the __FeatureBrokerSingleton class, these methods are provided only so
     # that IDE auto complete works.
     def get_feature(self, feature_name):
-        return self.instance.get_feature(feature_name)
+        return FeatureBroker.instance.get_feature(feature_name)
 
     def provide(self, feature_name, cls):
-        return self.instance.provide(feature_name, cls)
+        return FeatureBroker.instance.provide(feature_name, cls)
