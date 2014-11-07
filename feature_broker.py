@@ -43,6 +43,9 @@ class FeatureBroker(object):
         def get_feature_names(self):
             return sorted(self.features.keys())
 
+        def get_features(self):
+            return sorted(self.features.items())
+
         def remove_all_features(self):
             self.features = {}
 
@@ -56,8 +59,10 @@ class FeatureBroker(object):
 
     # All functionality should be provided in the __FeatureBrokerSingleton class, these methods are provided only so
     # that IDE auto complete works.
-    def get_feature(self, feature_name):
+    @staticmethod
+    def get_feature(feature_name):
         return FeatureBroker.instance.get_feature(feature_name)
 
-    def provide(self, feature_name, cls):
+    @staticmethod
+    def provide(feature_name, cls):
         return FeatureBroker.instance.provide(feature_name, cls)

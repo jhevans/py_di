@@ -1,5 +1,5 @@
 from logger import PrintLogger, FileLogger
-from provisioner import FeatureBroker
+from feature_broker import FeatureBroker
 
 __author__ = 'JohnH.Evans'
 
@@ -10,5 +10,6 @@ def do_some_stuff():
 
 
 if __name__ == "__main__":
-    FeatureBroker().provide('logger', FileLogger)
+    # FeatureBroker().provide('logger', FileLogger)
+    FeatureBroker().provide('logger', PrintLogger)
     do_some_stuff()

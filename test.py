@@ -40,6 +40,22 @@ class FeatureBrokerTest(TestCase):
             FeatureBroker().get_feature('foo')
 
     def test_get_features(self):
+        for index, name in enumerate(self.feature_names):
+            if index % 2 == 0:
+                FeatureBroker().provide(name, self.TestFeature)
+            else:
+                FeatureBroker().provide(name, self.TestFeature2)
+
+        features = FeatureBroker().get_features()
+
+        for index, name in enumerate(sorted(self.feature_names)):
+            self.assertEqual(features[index][0], name)
+            if index % 2 == 0:
+                self.assertEqual(features[index][1], self.TestFeature)
+            else:
+                self.assertEqual(features[index][1], self.TestFeature2)
+
+    def test_get_feature_names(self):
         for name in self.feature_names:
             FeatureBroker().provide(name, self.TestFeature)
 
@@ -57,7 +73,6 @@ class FeatureBrokerTest(TestCase):
             with self.assertRaises(MissingFeatureException):
                 FeatureBroker().get_feature(name)
 
-    # @skip("There's something really funky going on here...")
     def test_cant_duplicate_feature(self):
         FeatureBroker().provide('foo', self.TestFeature)
         with self.assertRaises(DuplicateFeatureException) as context_manager:
