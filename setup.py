@@ -10,5 +10,4 @@ setup(name='py_di',
       author_email='jhevans28@gmail.com',
       license='gpl3',
       packages=('py_di',),
-      zip_safe=False,
 )
