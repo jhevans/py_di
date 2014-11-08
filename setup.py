@@ -1,8 +1,8 @@
 __author__ = 'John Evans'
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
-setup(name='py_di   ',
+setup(name='py_di',
       version=0.1,
       description='A basic dependency injection broker',
       url='https://github.com/jhevans/py_di',

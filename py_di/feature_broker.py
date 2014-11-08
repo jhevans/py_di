@@ -14,6 +14,11 @@ class DuplicateFeatureException(BaseException):
     def __init__(self, feature):
         super(DuplicateFeatureException, self).__init__(self.message_template % feature)
 
+class NotAClassException(BaseException):
+    message_template = "Feature '%s' is not a class"
+
+    def __init__(self, feature):
+        super(NotAClassException, self).__init__(self.message_template % feature)
 
 class FeatureBroker(object):
     instance = None
@@ -31,6 +36,8 @@ class FeatureBroker(object):
                 raise MissingFeatureException(feature_name)
 
         def provide(self, feature_name, cls):
+            if not type(cls) is type:
+                raise NotAClassException(feature_name)
             try:
                 self.features[feature_name]
                 raise DuplicateFeatureException(feature_name)
