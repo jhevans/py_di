@@ -14,11 +14,11 @@ class DuplicateFeatureException(BaseException):
     def __init__(self, feature):
         super(DuplicateFeatureException, self).__init__(self.message_template % feature)
 
-class NotAClassException(BaseException):
-    message_template = "Feature '%s' is not a class"
+class NotCallableException(BaseException):
+    message_template = "Feature '%s' of type %s is not a callable object"
 
-    def __init__(self, feature):
-        super(NotAClassException, self).__init__(self.message_template % feature)
+    def __init__(self, name, obj):
+        super(NotCallableException, self).__init__(self.message_template % (name, str(type(obj))))
 
 class Injector(object):
     __instance = None
@@ -35,14 +35,14 @@ class Injector(object):
             except KeyError:
                 raise MissingFeatureException(feature_name)
 
-        def provide(self, feature_name, cls, *args, **kwargs):
-            if not type(cls) is type:
-                raise NotAClassException(feature_name)
+        def provide(self, feature_name, feature_callable, *args, **kwargs):
+            if not hasattr(feature_callable, '__call__'):
+                raise NotCallableException(feature_name, feature_callable)
             try:
                 self.features[feature_name]
                 raise DuplicateFeatureException(feature_name)
             except KeyError:
-                self.features[feature_name] = cls(*args, **kwargs)
+                self.features[feature_name] = feature_callable(*args, **kwargs)
 
         def remove_feature(self, feature_name):
             del self.features[feature_name]

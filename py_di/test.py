@@ -1,6 +1,6 @@
 from unittest.case import TestCase, skip
 
-from py_di.injector import Injector, MissingFeatureException, DuplicateFeatureException, NotAClassException
+from py_di.injector import Injector, MissingFeatureException, DuplicateFeatureException, NotCallableException
 
 
 __author__ = 'JohnH.Evans'
@@ -31,11 +31,23 @@ class InjectorTest(TestCase):
             Injector().get_feature('foo')
         self.assertEqual(context_manager.exception.message, "Feature 'foo' has not been provided")
 
-    def test_feature_returned_when_provided(self):
+    def test_feature_returned_when_provided_with_class(self):
         Injector().provide('foo', self.TestFeature)
         feature = Injector().get_feature('foo')
 
         self.assertEqual(type(feature), self.TestFeature)
+
+    def test_feature_returned_when_provided_with_function(self):
+        Injector().provide('foo', lambda: 'bar')
+        feature = Injector().get_feature('foo')
+
+        self.assertEqual(feature, 'bar')
+
+    def test_exception_raised_when_non_callable_provided(self):
+        with self.assertRaises(NotCallableException) as context_manager:
+            Injector().provide('foo', 12345)
+        self.assertEqual(context_manager.exception.message, "Feature 'foo' of type <type 'int'> is not a callable object")
+
 
     def test_args_passed_to_feature(self):
         Injector().provide('foo', self.TestFeature, *('bar', 'baz'))
@@ -85,8 +97,3 @@ class InjectorTest(TestCase):
         with self.assertRaises(DuplicateFeatureException) as context_manager:
             Injector().provide('foo', self.TestFeature)
         self.assertEqual(context_manager.exception.message, "Feature 'foo' has already been provided")
-
-    def test_provide_requires_callable(self):
-        with self.assertRaises(NotAClassException) as context_manager:
-            Injector().provide('foo', 12345)
-        self.assertEqual(context_manager.exception.message, "Feature 'foo' is not a class")
