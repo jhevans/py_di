@@ -20,10 +20,10 @@ class NotAClassException(BaseException):
     def __init__(self, feature):
         super(NotAClassException, self).__init__(self.message_template % feature)
 
-class FeatureBroker(object):
-    instance = None
+class Injector(object):
+    __instance = None
 
-    class __FeatureBrokerSingleton(object):
+    class __InjectorSingleton(object):
         features = {}
 
         def __init__(self):
@@ -51,25 +51,25 @@ class FeatureBroker(object):
             return sorted(self.features.keys())
 
         def get_features(self):
-            return sorted(self.features.items())
+            return self.features.copy()
 
         def remove_all_features(self):
             self.features = {}
 
 
     def __init__(self):
-        if not FeatureBroker.instance:
-            FeatureBroker.instance = FeatureBroker.__FeatureBrokerSingleton()
+        if not Injector.__instance:
+            Injector.__instance = Injector.__InjectorSingleton()
 
     def __getattr__(self, name):
-        return getattr(FeatureBroker.instance, name)
+        return getattr(Injector.__instance, name)
 
-    # All functionality should be provided in the __FeatureBrokerSingleton class, these methods are provided only so
+    # All functionality should be provided in the __InjectorSingleton class, these methods are provided only so
     # that IDE auto complete works.
     @staticmethod
     def get_feature(feature_name):
-        return FeatureBroker.instance.get_feature(feature_name)
+        return Injector.__instance.get_feature(feature_name)
 
     @staticmethod
     def provide(feature_name, cls, *args, **kwargs):
-        return FeatureBroker.instance.provide(feature_name, cls, *args, **kwargs)
+        return Injector.__instance.provide(feature_name, cls, *args, **kwargs)

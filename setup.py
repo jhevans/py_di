@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(name='py_di',
       version=0.1,
-      description='A basic dependency injection broker',
+      description='A basic dependency injection framework',
       url='https://github.com/jhevans/py_di',
       author='John Evans',
       author_email='jhevans28@gmail.com',
