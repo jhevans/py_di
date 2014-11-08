@@ -8,7 +8,9 @@ __author__ = 'JohnH.Evans'
 
 class FeatureBrokerTest(TestCase):
     class TestFeature(object):
-        pass
+        def __init__(self, *args, **kwargs):
+            self.args = args
+            self.kwargs = kwargs
 
     class TestFeature2(object):
         pass
@@ -35,13 +37,21 @@ class FeatureBrokerTest(TestCase):
 
         self.assertEqual(type(feature), self.TestFeature)
 
+    def test_args_passed_to_feature(self):
+        FeatureBroker().provide('foo', self.TestFeature, *('bar', 'baz'))
+        self.assertEqual(FeatureBroker().get_feature('foo').args, ('bar', 'baz'))
+
+    def test_kwargs_passed_to_feature(self):
+        FeatureBroker().provide('foo', self.TestFeature, **{'bar': 1, 'baz': 2})
+        self.assertEqual(FeatureBroker().get_feature('foo').kwargs, {'bar': 1, 'baz': 2})
+
     def test_remove_feature(self):
         FeatureBroker().provide('foo', self.TestFeature)
         FeatureBroker().remove_feature('foo')
         with self.assertRaises(MissingFeatureException):
             FeatureBroker().get_feature('foo')
 
-    @skip('this one is not a priority+')
+    @skip('this one is not a priority')
     def test_get_features(self):
         for index, name in enumerate(self.feature_names):
             if index % 2 == 0:

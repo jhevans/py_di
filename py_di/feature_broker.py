@@ -35,14 +35,14 @@ class FeatureBroker(object):
             except KeyError:
                 raise MissingFeatureException(feature_name)
 
-        def provide(self, feature_name, cls):
+        def provide(self, feature_name, cls, *args, **kwargs):
             if not type(cls) is type:
                 raise NotAClassException(feature_name)
             try:
                 self.features[feature_name]
                 raise DuplicateFeatureException(feature_name)
             except KeyError:
-                self.features[feature_name] = cls()
+                self.features[feature_name] = cls(*args, **kwargs)
 
         def remove_feature(self, feature_name):
             del self.features[feature_name]
@@ -71,5 +71,5 @@ class FeatureBroker(object):
         return FeatureBroker.instance.get_feature(feature_name)
 
     @staticmethod
-    def provide(feature_name, cls):
-        return FeatureBroker.instance.provide(feature_name, cls)
+    def provide(feature_name, cls, *args, **kwargs):
+        return FeatureBroker.instance.provide(feature_name, cls, *args, **kwargs)
