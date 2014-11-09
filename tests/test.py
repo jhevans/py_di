@@ -1,4 +1,4 @@
-from unittest.case import TestCase, skip
+from unittest.case import TestCase
 
 from py_di.injector import Injector, MissingFeatureException, DuplicateFeatureException, NotCallableException
 
@@ -46,8 +46,8 @@ class InjectorTest(TestCase):
     def test_exception_raised_when_non_callable_provided(self):
         with self.assertRaises(NotCallableException) as context_manager:
             Injector().provide('foo', 12345)
-        self.assertEqual(context_manager.exception.message, "Feature 'foo' of type <type 'int'> is not a callable object")
-
+        self.assertEqual(context_manager.exception.message,
+                         "Feature 'foo' of type <type 'int'> is not a callable object")
 
     def test_args_passed_to_feature(self):
         Injector().provide('foo', self.TestFeature, *('bar', 'baz'))

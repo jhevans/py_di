@@ -1,5 +1,5 @@
 from logger import PrintLogger
-from py_di.injector import Injector
+from needle.injector import Injector
 
 __author__ = 'JohnH.Evans'
 

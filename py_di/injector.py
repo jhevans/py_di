@@ -1,3 +1,6 @@
+import importlib
+import os
+
 __author__ = 'JohnH.Evans'
 
 
@@ -14,11 +17,13 @@ class DuplicateFeatureException(BaseException):
     def __init__(self, feature):
         super(DuplicateFeatureException, self).__init__(self.message_template % feature)
 
+
 class NotCallableException(BaseException):
     message_template = "Feature '%s' of type %s is not a callable object"
 
     def __init__(self, name, obj):
         super(NotCallableException, self).__init__(self.message_template % (name, str(type(obj))))
+
 
 class Injector(object):
     __instance = None
@@ -27,7 +32,11 @@ class Injector(object):
         features = {}
 
         def __init__(self):
-            pass
+            provisioning_module_path = os.environ.get('PY_DI_PROVISIONING_MODULE')
+            if provisioning_module_path is not None:
+                features = importlib.import_module(provisioning_module_path).features()
+                for name, feature_callable, args, kwargs in features:
+                    self.provide(name, feature_callable, *args, **kwargs)
 
         def get_feature(self, feature_name):
             try:
